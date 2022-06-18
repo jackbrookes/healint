@@ -1,19 +1,3 @@
-
-demographic_data <- users_raw %>% 
-  filter(age >= 18)%>% 
-  group_by(age, gender, country)%>%
-  tally() %>% 
-  rename(population = n)
-
-
-# tally number of users for each country.
-# Note that where there are no users for a country there will be no row.
-
-country_summary <- left_join(users_raw, country_codes_iso, by = c("country" = "code_2")) %>% 
-  group_by(region, country) %>% 
-  tally(name = "population")
-
-
 # Plot the map. We first plot all countries in a solid color, the countries with 
 # users, then an outline of all countries on top.
 
@@ -34,7 +18,7 @@ country_codes_iso %>%
   coord_fixed() +
   labs(fill = "Number of users") +
   scale_fill_gradientn(
-    colours = map_colour_palette,
+    colours = MAP_COLOUR_PALETTE,
     trans = "log10",
     limits = c(1, 10000)
   )
