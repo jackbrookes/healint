@@ -64,3 +64,18 @@ migraine_user_summary %>%
   pivot_longer(-age_category) %>% 
   pivot_wider(names_from = age_category, id_cols = name, values_from = value) %>% 
   write_csv("Output/migraine_summary_age.csv")
+
+# migraine frequency
+
+migraine_user_summary %>% 
+  group_by(gender, frequency) %>% 
+  summarise(num = n(), .groups = "drop_last") %>%
+  mutate(portion = num / sum(num), percentage = scales::percent(portion)) %>% 
+  write_csv("Output/migraine_frequency_summary_gender.csv")
+
+migraine_user_summary %>% 
+  group_by(frequency) %>% 
+  summarise(num = n(), .groups = "drop_last") %>%
+  mutate(portion = num / sum(num), percentage = scales::percent(portion)) %>% 
+  write_csv("Output/migraine_frequency_summary_overall.csv")
+

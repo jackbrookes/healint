@@ -5,7 +5,7 @@ sleep_events <- sleep_raw %>%
          assigned_night = floor_date(sleep_starttime_local - hours(HOURS_AFTER_MIDNIGHT), unit = "days"),
          start_time_from_midnight = as.numeric(interval(assigned_night, sleep_starttime_local), "hours"),
          end_time_from_midnight = as.numeric(interval(assigned_night, sleep_endtime_local), "hours")) %>% 
-  left_join(users, by = "hashed_userid")
+  inner_join(users, by = "hashed_userid")
 
 # Summary of sleep characteristics per night per user
 
@@ -25,7 +25,6 @@ sleep_night_summary <- sleep_events %>%
 sleep_user_summary <- sleep_night_summary %>%
   group_by(hashed_userid, region23, country, age, gender, age_category) %>% 
   summarise(across(total_hours_slept:num_interruptions, mean), .groups = "drop")
-
 
 # Summary of sleep characteristics per region
 

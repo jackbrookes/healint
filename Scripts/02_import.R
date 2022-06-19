@@ -1,6 +1,6 @@
 # data for each user
 users_raw <- read_csv("Data/users.csv") %>% 
-  filter(is.na(age) || age >= 18)
+  filter(is.na(age) | age >= 18)
 
 # data for the coordinates of different countries with included ISO codes
 country_codes_iso <- readRDS("Resources/country_ISO_codes2.rds") %>% 
