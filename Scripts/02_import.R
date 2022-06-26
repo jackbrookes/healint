@@ -11,8 +11,10 @@ world_map_iso <- readRDS("Resources/world_map2.rds") %>%
   rename(region = country)
 
 sleep_raw <- read_csv("Data/confirmed_sleeps.csv") %>% 
-  na.omit()
+  na.omit() %>% 
+  distinct() # for some reason there are duplicates
 
 migraine_raw <- read_csv("Data/migraines_base.csv") %>% 
-  na.omit()
+  na.omit() %>% 
+  distinct() # for some reason there are duplicates
 

@@ -18,6 +18,9 @@ MAP_COLOUR_PALETTE <- c(
   "#bd7187"
 )
 
+# vector of days the experiment spans
+EXPERIMENT_DAYS <- seq(ymd("2021-06-30"), ymd("2021-12-31"), by = "1 day")
+
 save_rds_named <- function(x) {
   obj_name <- deparse(substitute(x))
   filepath <- file.path("Processed Data", paste0(obj_name, ".rds"))

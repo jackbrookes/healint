@@ -18,7 +18,13 @@ sleep_night_summary <- sleep_events %>%
             wake_time = time_in_bed - total_hours_slept,
             sleep_efficiency = total_hours_slept / time_in_bed,
             num_interruptions = n() - 1,
-            .groups = "drop")
+            .groups = "drop") %>%
+  group_by(hashed_userid) %>% 
+  complete(nesting(region23, country, age, gender, age_category),
+           assigned_night = EXPERIMENT_DAYS) %>% 
+  mutate(across(c(total_hours_slept, num_interruptions),
+                ~ifelse(is.na(.), mean(.[!is.na(.)]), .))) %>% 
+  ungroup()
 
 # Summary of sleep characteristics per user
 
