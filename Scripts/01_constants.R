@@ -4,8 +4,16 @@
 HOURS_AFTER_MIDNIGHT <- 8
 
 # maximum duration of an attack
-
 MAX_HOURS_ATTACK <- 96 # 4 days
+
+# maximum number attacks for valid data
+MAX_NUMBER_ATTACKS <- 25
+
+# number of migraines per month to be included in more sophisticated analysis
+MIN_MONTHLY_MIGRAINE_REPORTS <- 3
+
+# number of months in experiment
+EXPERIMENT_NUM_MONTHS <- 6
 
 # define a palette of yellow red hues
 MAP_COLOUR_PALETTE <- c(
@@ -32,3 +40,10 @@ read_rds_named <- function(filename) {
   readRDS(filepath)
 }
 
+zscore <- function(x) {
+  (x - mean(x)) / sd(x)
+}
+
+mean_square_diff <- function(x, y) {
+  mean((x - y)^2)
+}

@@ -1,3 +1,4 @@
+
 # dataframe with one row per migraine event
 # we can use month here because we only have 6 months worth of data
 
@@ -9,8 +10,21 @@ migraine_events <- migraine_raw %>%
          migraine_start_time_from_midnight = as.numeric(interval(assigned_day, migraine_starttime_local), "hours"),
          migraine_end_time_from_midnight = as.numeric(interval(assigned_day, migraine_endtime_local), "hours")
          ) %>%
-  filter(attack_duration <= MAX_HOURS_ATTACK) %>% 
+  filter(attack_duration <= MAX_HOURS_ATTACK) %>%
+  group_by(hashed_userid) %>% 
+  filter(n() <= (MAX_NUMBER_ATTACKS * EXPERIMENT_NUM_MONTHS)) %>%
+  ungroup() %>% 
   inner_join(users, by = "hashed_userid")
+
+# these users meet our criteria for more sophisticated analysis
+migraineurs <- migraine_events %>% 
+  group_by(hashed_userid, month) %>% 
+  count() %>% 
+  filter(n >= MIN_MONTHLY_MIGRAINE_REPORTS) %>% 
+  group_by(hashed_userid) %>% 
+  count() %>% 
+  filter(n >= EXPERIMENT_NUM_MONTHS) %>% 
+  select(hashed_userid)
 
 # function to take a start, end time and split it into pairs of hours.
 # e.g. start=20, end=50 would result in:
