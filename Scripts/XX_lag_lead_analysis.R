@@ -54,9 +54,18 @@ aligned_daynight_summary %>%
   geom_vline(xintercept = 0)
 
 aligned_daynight_summary %>% 
-  ggplot(aes(x = best_alignment, y = min_mean_squares)) + 
-  geom_point() + 
-  geom_vline(xintercept = 0)
+  ggplot(aes(x = best_alignment)) + 
+  geom_density(color="black", fill="lightblue")+ 
+  geom_vline(xintercept = 0, linetype = "dashed")+
+  theme_prism()+
+  xlab("Best Alignment")+
+  ylab(NULL)+
+  coord_cartesian(expand = c(0,0))+
+  theme(axis.text = element_text(size = 10), 
+        axis.title = element_text(size = 10))+
+  scale_y_continuous(limits = c(0,0.05))
+
+ggsave("Figures/model.png", dpi = 300, units = ("in"), width = 3, height = 3)
 
 t.test(aligned_daynight_summary$best_alignment)
 

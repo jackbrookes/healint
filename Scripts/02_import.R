@@ -14,7 +14,15 @@ sleep_raw <- read_csv("Data/confirmed_sleeps.csv") %>%
   na.omit() %>% 
   distinct() # for some reason there are duplicates
 
+# classification of symptoms into categories
+
+symptoms_classified <- read_csv("Data/symptom_classification.csv")
+
+symptoms_raw <- read_csv("Data/migraine_symptoms.csv") %>% 
+  filter(is_default) %>% 
+  left_join(symptoms_classified, by = "symptom") %>% 
+  na.omit()
+
 migraine_raw <- read_csv("Data/migraines_base.csv") %>% 
   na.omit() %>% 
   distinct() # for some reason there are duplicates
-

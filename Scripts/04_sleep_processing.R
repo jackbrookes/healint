@@ -31,6 +31,7 @@ sleep_night_summary <- sleep_events %>%
 # Summary of sleep characteristics per user
 
 sleep_user_summary <- sleep_night_summary %>%
+  filter(!missing) %>% 
   group_by(hashed_userid, region23, country, age, gender, age_category) %>% 
   summarise(across(total_hours_slept:num_interruptions, mean), .groups = "drop")
 
