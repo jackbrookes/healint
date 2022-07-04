@@ -1,4 +1,3 @@
-library(tidyverse)
 library(lubridate)
 library(ggprism)
 library(ggpubr)
@@ -6,6 +5,7 @@ library(Hmisc)
 library(corrplot)
 library(countrycode)
 library(lme4)
+library(tidyverse)
 
 # required
 source("Scripts/01_constants.R")

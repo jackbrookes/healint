@@ -23,9 +23,10 @@ sleep_night_summary <- sleep_events %>%
   group_by(hashed_userid) %>% 
   complete(nesting(region23, country, age, gender, age_category),
            assigned_night = EXPERIMENT_DAYS,
-           fill = list(missing = TRUE)) %>% 
+           fill = list(missing = TRUE)) %>%
+  mutate(hours_slept_deviation = total_hours_slept - median(total_hours_slept, na.rm = TRUE)) %>% 
   mutate(across(c(total_hours_slept, num_interruptions),
-                ~ifelse(is.na(.), mean(.[!is.na(.)]), .))) %>% 
+                ~ifelse(is.na(.), median(.[!is.na(.)]), .))) %>% 
   ungroup()
 
 # Summary of sleep characteristics per user
