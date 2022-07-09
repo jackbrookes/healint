@@ -52,11 +52,12 @@ migraine_day_summary <- migraine_events %>%
          attack_duration = migraine_end_time_from_midnight - migraine_start_time_from_midnight,
          total_pain = attack_duration * painintensity) %>% 
   group_by(hashed_userid, assigned_day, region23, country, age, gender, age_category) %>% 
-  summarise(across(c(attack_duration, total_pain), sum), .groups = "drop") %>% # collapse to one row per day
+  summarise(across(c(painintensity, attack_duration, total_pain), sum), .groups = "drop") %>% # collapse to one row per day
   group_by(hashed_userid) %>% 
   complete(nesting(region23, country, age, gender, age_category),
            assigned_day = EXPERIMENT_DAYS, # fill in missing days with 0
            fill = list(attack_duration = 0,
+                       painintensity = 0,
                        total_pain = 0)) %>% 
   ungroup()
   
@@ -89,4 +90,13 @@ migraine_user_summary <- migraine_events %>%
 migraine_region_summary <- migraine_user_summary %>%
   group_by(region23) %>% 
   summarise(across(painintensity:attacks_per_month, mean), .groups = "drop")
+
+# save RDS
+
+save_rds_named(migraine_events)
+save_rds_named(migraineurs)
+save_rds_named(migraine_day_summary)
+save_rds_named(migraine_user_month_summary)
+save_rds_named(migraine_user_summary)
+
 

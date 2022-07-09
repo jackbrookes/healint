@@ -41,9 +41,21 @@ read_rds_named <- function(filename) {
 }
 
 zscore <- function(x) {
-  (x - mean(x)) / sd(x)
+  (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
 }
 
 mean_square_diff <- function(x, y) {
   mean((x - y)^2)
 }
+
+glmer_control_list <- glmerControl(
+  optimizer ='optimx',
+  optCtrl=list(method='nlminb')
+)
+
+lmer_control_list <- lmerControl(
+  optimizer ='optimx',
+  optCtrl=list(method='L-BFGS-B')
+)
+
+

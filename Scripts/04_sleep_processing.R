@@ -24,8 +24,8 @@ sleep_night_summary <- sleep_events %>%
   complete(nesting(region23, country, age, gender, age_category),
            assigned_night = EXPERIMENT_DAYS,
            fill = list(missing = TRUE)) %>%
-  mutate(hours_slept_deviation = total_hours_slept - median(total_hours_slept, na.rm = TRUE)) %>% 
-  mutate(across(c(total_hours_slept, num_interruptions),
+  mutate(hours_slept_zdeviation = abs(zscore(total_hours_slept))) %>% 
+  mutate(across(c(total_hours_slept, num_interruptions), # replace missing data with median values
                 ~ifelse(is.na(.), median(.[!is.na(.)]), .))) %>% 
   ungroup()
 
@@ -34,13 +34,13 @@ sleep_night_summary <- sleep_events %>%
 sleep_user_summary <- sleep_night_summary %>%
   filter(!missing) %>% 
   group_by(hashed_userid, region23, country, age, gender, age_category) %>% 
-  summarise(across(total_hours_slept:num_interruptions, mean), .groups = "drop")
+  summarise(across(total_hours_slept:hours_slept_zdeviation, mean), .groups = "drop")
 
 # Summary of sleep characteristics per region
 
 sleep_region_summary <- sleep_user_summary %>%
   group_by(region23) %>% 
-  summarise(across(total_hours_slept:num_interruptions, mean), .groups = "drop")
+  summarise(across(total_hours_slept:hours_slept_zdeviation, mean), .groups = "drop")
 
 # save RDS
 

@@ -4,7 +4,11 @@ library(ggpubr)
 library(Hmisc)
 library(corrplot)
 library(countrycode)
-library(lme4)
+library(lme4) # temp
+library(optimx) # temp
+library(lmerTest) # temp
+library(broom.mixed) # temp
+library(brms) # temp
 library(tidyverse)
 
 # required
@@ -15,19 +19,21 @@ source("Scripts/03_demographics_processing.R")
 
 # run the processing
 source("Scripts/04_sleep_processing.R")
+source("Scripts/05_migraine_processing.R")
 
 # or just read in the processed data
-source("Scripts/05_read_sleep.R")
+source("Scripts/06_read_sleep.R")
+source("Scripts/07_read_migraine.R")
 
-source("Scripts/06_migraine_processing.R")
-source("Scripts/07_sleep_migraine_processing.R")
+
+source("Scripts/08_sleep_migraine_processing.R")
 
 # graphs
-source("Scripts/08_sleep_graphs.R")
-source("Scripts/09_migraine_graphs.R")
-source("Scripts/10_sleep_migraine_graphs.R")
-source("Scripts/11_demographics_graphs.R")
+source("Scripts/09_sleep_graphs.R")
+source("Scripts/10_migraine_graphs.R")
+source("Scripts/11_sleep_migraine_graphs.R")
+source("Scripts/12_demographics_graphs.R")
 
 # output
-source("Scripts/12_summary_tables.R")
-source("Scripts/13_statistics.R")
+source("Scripts/13_summary_tables.R")
+source("Scripts/14_statistics.R")
