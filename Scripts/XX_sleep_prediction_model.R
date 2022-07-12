@@ -7,7 +7,7 @@ sleep_prediction_data <- combined_daynight_summary %>%
 # model for each predictor
 
 sleep_mod_hadattack <- lmer(
-  total_hours_slept ~ had_attack +
+  hours_slept_zdeviation ~ had_attack +
     (1 + had_attack | hashed_userid),
   data = sleep_prediction_data,
   control = lmer_control_list
@@ -37,26 +37,13 @@ summary(sleep_mod_duration)
 # combine
 
 sleep_mod_all <- lmer(
-  total_hours_slept ~ attack_duration *
-    painintensity + 
-    (1 + attack_duration * painintensity | hashed_userid),
+  total_hours_slept ~ had_attack+
+    (1 + had_attack | hashed_userid),
   data = sleep_prediction_data,
   control = lmer_control_list
 )
 
 summary(sleep_mod_all)
-
-sleep_mod_all <- brm(
-  total_hours_slept ~ had_attack *
-    painintensity + 
-    (1 + had_attack * painintensity | hashed_userid),
-  data = sleep_prediction_data,
-  warmup = 1000,
-  iter = 2000, chains = 4, control = list(adapt_delta = 0.95)
-)
-
-summary(sleep_mod_all)
-
 
 # save
 

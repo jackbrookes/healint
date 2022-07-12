@@ -10,7 +10,7 @@ MAX_HOURS_ATTACK <- 96 # 4 days
 MAX_NUMBER_ATTACKS <- 25
 
 # number of migraines per month to be included in more sophisticated analysis
-MIN_MONTHLY_MIGRAINE_REPORTS <- 3
+MIN_MONTHLY_MIGRAINE_REPORTS <- 8
 
 # number of months in experiment
 EXPERIMENT_NUM_MONTHS <- 6

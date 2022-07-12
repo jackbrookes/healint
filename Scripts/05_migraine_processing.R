@@ -18,12 +18,9 @@ migraine_events <- migraine_raw %>%
 
 # these users meet our criteria for more sophisticated analysis
 migraineurs <- migraine_events %>% 
-  group_by(hashed_userid, month) %>% 
-  count() %>% 
-  filter(n >= MIN_MONTHLY_MIGRAINE_REPORTS) %>% 
   group_by(hashed_userid) %>% 
   count() %>% 
-  filter(n >= EXPERIMENT_NUM_MONTHS) %>% 
+  filter(n >= MIN_MONTHLY_MIGRAINE_REPORTS * EXPERIMENT_NUM_MONTHS) %>% 
   select(hashed_userid)
 
 # function to take a start, end time and split it into pairs of hours.

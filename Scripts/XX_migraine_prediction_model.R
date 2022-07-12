@@ -56,7 +56,6 @@ migraine_mod_all <- glmer(
 
 summary(migraine_mod_all)
 
-
 # save
 
 save_rds_named(migraine_mod_interruptions)
