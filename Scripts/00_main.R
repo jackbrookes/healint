@@ -10,6 +10,7 @@ library(lmerTest) # temp
 library(broom.mixed) # temp
 library(brms) # temp
 library(tidyverse)
+library(ggsignif)
 
 # required
 source("Scripts/01_constants.R")

@@ -1,22 +1,22 @@
 ﻿symptom,category
-mood changes,psychological
-sensitivity to light,neurological
-throbbing pain,pain
-neck pain,pain
-sensitivity to sound,neurological
-nausea,general
-worse pain if moving,pain
-nasal congestion,general
-tinnitus,neurological
-blurred vision,neurological
+mood changes,Psychological
+sensitivity to light,Neurological
+throbbing pain,Pain
+neck pain,Pain
+sensitivity to sound,Neurological
+nausea,General
+worse pain if moving,Pain
+nasal congestion,General
+tinnitus,Neurological
+blurred vision,Neurological
 sensitivity to odours,neurological
-anxiety,psychological
-confusion,psychological
-hot flashes,general
-insomnia,general
-dizziness,neurological
-diarrhoea,general
-vomiting,general
-vertigo,neurological
-confused/daze,neurological
-sensitivity to heat,neurological
+anxiety,Psychological
+confusion,Psychological
+hot flashes,General
+insomnia,General
+dizziness,Neurological
+diarrhoea,General
+vomiting,General
+vertigo,Neurological
+confused/daze,Neurological
+sensitivity to heat,Neurological

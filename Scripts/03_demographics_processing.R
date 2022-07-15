@@ -16,3 +16,4 @@ population_summary <- users %>%
   rename(population = n) %>% 
   mutate(population = ifelse(gender == "M", -1*population, population)) %>% 
   na.omit()
+
