@@ -1,20 +1,16 @@
+library(Hmisc)
+library(tidyverse)
 library(lubridate)
 library(ggprism)
 library(ggpubr)
-library(Hmisc)
 library(corrplot)
 library(countrycode)
-library(lme4) # temp
-library(optimx) # temp
-library(lmerTest) # temp
-library(broom.mixed) # temp
-library(brms) # temp
-library(tidyverse)
+library(brms)
+library(HDInterval)
 
 # required
 source("Scripts/01_constants.R")
 source("Scripts/02_import.R")
-
 source("Scripts/03_demographics_processing.R")
 
 # run the processing
@@ -25,7 +21,7 @@ source("Scripts/05_migraine_processing.R")
 source("Scripts/06_read_sleep.R")
 source("Scripts/07_read_migraine.R")
 
-
+# combine the data
 source("Scripts/08_sleep_migraine_processing.R")
 
 # graphs

@@ -42,4 +42,5 @@ plot(migraine_bayes, variable = "^b_", regex = TRUE)
 
 # save
 
+save_rds_named(migraine_normalisation)
 save_rds_named(migraine_bayes)

@@ -31,4 +31,5 @@ plot(sleep_bayes, variable = "^b_", regex = TRUE)
 
 # save
 
+save_rds_named(sleep_normalisation)
 save_rds_named(sleep_bayes)

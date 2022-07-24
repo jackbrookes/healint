@@ -48,14 +48,11 @@ mean_square_diff <- function(x, y) {
   mean((x - y)^2)
 }
 
-glmer_control_list <- glmerControl(
-  optimizer ='optimx',
-  optCtrl=list(method='nlminb')
-)
-
-lmer_control_list <- lmerControl(
-  optimizer ='optimx',
-  optCtrl=list(method='L-BFGS-B')
-)
-
-
+calc_metrics <- function(x) {
+  hdi_95_region <- hdi(x)
+  return(tibble(
+    hdi_95_min = hdi_95_region[1],
+    hdi_95_max = hdi_95_region[2],
+    mean = mean(x)
+  ))
+}
