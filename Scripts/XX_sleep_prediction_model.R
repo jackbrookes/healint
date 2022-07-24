@@ -1,72 +1,34 @@
+sleep_normalisation <- combined_daynight_summary %>%
+  inner_join(migraineurs, by = "hashed_userid") %>% 
+  summarise(across(c(painintensity, total_pain, attack_duration), list(mean = mean, sd = sd)))
+
+
 sleep_prediction_data <- combined_daynight_summary %>%
   filter(!lead(missing, default = TRUE)) %>% 
   inner_join(migraineurs, by = "hashed_userid") %>% 
-  mutate(had_attack = attack_duration > 0, 
-         across(c(painintensity, total_pain, attack_duration), zscore)) # recenter these columns, helps with convergence
+  mutate(had_attack = as.numeric(attack_duration > 0), 
+         painintensity = (painintensity - sleep_normalisation$painintensity_mean) / sleep_normalisation$painintensity_sd,
+         total_pain = (total_pain - sleep_normalisation$total_pain_mean) / sleep_normalisation$total_pain_sd,
+         attack_duration = (attack_duration - sleep_normalisation$attack_duration_mean) / sleep_normalisation$attack_duration_sd) %>%  # recenter  helps with convergence
+  select(hashed_userid, total_hours_slept, had_attack, painintensity, total_pain)
 
-# model for each predictor
+# bayes
 
-sleep_mod_hadattack <- lmer(
-  hours_slept_zdeviation ~ had_attack +
-    (1 + had_attack | hashed_userid),
+sleep_bayes <- brm(
+  total_hours_slept ~ had_attack + painintensity +
+    (1 + had_attack + painintensity | hashed_userid),
   data = sleep_prediction_data,
-  control = lmer_control_list
+  chains = 4,
+  cores = 4,
+  iter = 4000,
+  warmup = 1000,
+  prior = prior(normal(0,100), class = b) +
+    prior(normal(0,100), class = sd, group = hashed_userid),
+  control = list(adapt_delta = .95)
 )
 
-summary(sleep_mod_hadattack)
-
-
-sleep_mod_pain <- lmer(
-  total_hours_slept ~ painintensity +
-    (1 + painintensity | hashed_userid),
-  data = sleep_prediction_data,
-  control = lmer_control_list
-)
-
-summary(sleep_mod_pain)
-
-sleep_mod_duration <- lmer(
-  total_hours_slept ~ attack_duration +
-    (1 + attack_duration | hashed_userid),
-  data = sleep_prediction_data,
-  control = lmer_control_list
-)
-
-summary(sleep_mod_duration)
-
-# combine
-
-sleep_mod_all <- lmer(
-  total_hours_slept ~ had_attack+
-    (1 + had_attack | hashed_userid),
-  data = sleep_prediction_data,
-  control = lmer_control_list
-)
-
-summary(sleep_mod_all)
+plot(sleep_bayes, variable = "^b_", regex = TRUE)
 
 # save
 
-save_rds_named(sleep_mod_interruptions)
-save_rds_named(sleep_mod_hours)
-save_rds_named(sleep_mod_deviation)
-save_rds_named(sleep_mod_all)
-
-sleep_fixed_effects <- sleep_mod_all %>%
-  tidy() %>% 
-  filter(effect == "fixed")
-
-sleep_mod_all %>% 
-  ranef() %>% 
-  as_tibble() %>% 
-  left_join(sleep_fixed_effects, by = "term") %>% 
-  filter(term != "(Intercept)") %>% 
-  ggplot() + 
-  geom_density(aes(x = estimate + condval, fill = term)) +
-  geom_vline(xintercept = 0, linetype = "dashed") +
-  facet_wrap(vars(term), scales = "free") +
-  labs(x = "Beta value estimate", y = "Density across population") +
-  theme_prism() +
-  theme(legend.position = "none")
-
-ggsave("Figures/sleep_mod_estimates.png", width = 9, height = 3)
+save_rds_named(sleep_bayes)
