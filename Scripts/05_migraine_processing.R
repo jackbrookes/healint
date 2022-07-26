@@ -14,7 +14,8 @@ migraine_events <- migraine_raw %>%
   group_by(hashed_userid) %>% 
   filter(n() <= (MAX_NUMBER_ATTACKS * EXPERIMENT_NUM_MONTHS)) %>%
   ungroup() %>% 
-  inner_join(users, by = "hashed_userid")
+  inner_join(users, by = "hashed_userid") %>% 
+  left_join(symptoms_raw, by = "hashed_migraineid")
 
 # these users meet our criteria for more sophisticated analysis
 migraineurs <- migraine_events %>% 
