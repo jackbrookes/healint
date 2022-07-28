@@ -49,12 +49,14 @@ ggplot(migraine_posterior) +
   scale_fill_discrete() + 
   scale_colour_discrete() + 
   labs(x = NULL, y = NULL) +
-  facet_wrap(vars(parameter)) + 
+  facet_wrap(vars(parameter), ncol = 1, scales = "free") + 
   theme_prism() +
   theme(legend.position = "none",
         panel.spacing = unit(25, "points"),
         plot.margin = unit(rep(15, 4), "points"),
         axis.line.y = element_blank())
+
+ggsave("Figures/migraine_mod_estimates.png", width = 4, height = 4.5)
 
 ggplot(sleep_posterior) + 
   geom_density(aes(x = sample, colour = parameter, fill = parameter),
@@ -69,9 +71,12 @@ ggplot(sleep_posterior) +
   scale_fill_discrete() + 
   scale_colour_discrete() + 
   labs(x = NULL, y = NULL) +
-  facet_wrap(vars(parameter)) + 
+  facet_wrap(vars(parameter), ncol = 1, scales = "free") + 
   theme_prism() +
   theme(legend.position = "none",
         panel.spacing = unit(25, "points"),
         plot.margin = unit(rep(15, 4), "points"),
         axis.line.y = element_blank())
+
+ggsave("Figures/sleep_mod_estimates.png", width = 4, height = 3)
+
