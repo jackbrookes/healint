@@ -1,7 +1,7 @@
 users <- users_raw %>% 
   mutate(country = ifelse(is.na(country), "NA", country),
          region23 = countrycode(country, origin = "iso2c", destination = "region23"),
-         age_category = ifelse(age < 35, "Younger adult", "Older adult"))
+         age_category = ifelse(age < 40, "Younger adult", "Older adult"))
 
 # tally number of users for each country.
 # Note that where there are no users for a country there will be no row.
