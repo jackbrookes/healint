@@ -3,12 +3,15 @@ library(tidyverse)
 library(lubridate)
 library(ggprism)
 library(ggpubr)
-library(corrplot)
 library(countrycode)
 library(brms)
 library(HDInterval)
 library(ggsignif)
-
+library(foreign)
+library(MASS)
+library(ggplot2)
+library(reshape2)
+library(dplyr)
 
 # required
 source("Scripts/01_constants.R")

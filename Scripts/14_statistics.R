@@ -76,3 +76,34 @@ corrplot(corr_result$r, type = "lower", p.mat =  p.mat, sig.level = 0.05,
          diag=FALSE)
 
 
+# ordinal linear regression to predict frequency from sleep
+combined_user_summary <- combined_user_summary %>% 
+  mutate(frequency = as.factor(frequency))
+
+hours_slept_model <- polr(frequency ~ total_hours_slept, data = combined_user_summary, Hess=TRUE)
+
+## view a summary of the model
+summary(hours_slept_model)
+(ctable <- coef(summary(hours_slept_model)))
+
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+
+## combined table
+(ctable <- cbind(ctable, "p value" = p))
+
+exp(coef(hours_slept_model))
+
+newdat <- combined_user_summary %>% 
+  select(frequency, total_hours_slept, hashed_userid)
+
+newdat <- cbind(newdat, predict(hours_slept_model, newdat, type = "probs"))
+head(newdat)
+
+lnewdat <- melt(newdat, id.vars = c("total_hours_slept"),
+                variable.name = "frequency", value.name="Probability")
+                
+## view first few rows
+
+head(lnewdat)
+ggplot(lnewdat, aes(x = total_hours_slept, y = Probability, colour = frequency)) +
+  geom_line() + facet_grid(total_hours_slept ~ frequency)
